@@ -1,6 +1,7 @@
 ESX = exports['es_extended']:getSharedObject()
 
 Calendar.IsOpened = false
+Calendar.CurrentReward = 0
 
 CreateThread(function() 
     local timer = 1000
@@ -43,7 +44,9 @@ end)
 
 RegisterNetEvent("calendar:open", function(rewardToOpen) 
     SetNuiFocus(true, true)
-    
+
+    Calendar.CurrentReward = rewardToOpen
+
     if rewardToOpen then
         Calendar.Gifts[rewardToOpen].canOpen = true
     end
@@ -62,4 +65,6 @@ end)
 
 RegisterNUICallback("calendar:claim", function() 
     TriggerServerEvent("calendar:claim")
+
+    Calendar.Gifts[Calendar.CurrentReward].canOpen = false
 end)

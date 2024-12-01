@@ -16,12 +16,11 @@ RegisterNetEvent("calendar:open", function()
         if tonumber(string.sub(currentNumberServerDay, 1, 1)) == 0 then
             local day = string.sub(currentNumberServerDay, 2, 2)
             currentNumberServerDay = day
-            print(currentNumberServerDay, day)
         end
     end
 
     currentNumberServerDay = tonumber(currentNumberServerDay)
-
+    
     if Calendar.rewardsClaimed[identifier] and Calendar.rewardsClaimed[identifier][currentNumberServerDay] then
         TriggerClientEvent("calendar:open", source, 0)
     else
@@ -38,7 +37,6 @@ RegisterNetEvent("calendar:claim", function()
         if tonumber(string.sub(currentNumberServerDay, 1, 1)) == 0 then
             local day = string.sub(currentNumberServerDay, 2, 2)
             currentNumberServerDay = day
-            print(currentNumberServerDay, day)
         end
     end
 
@@ -66,7 +64,13 @@ MySQL.ready(function()
     MySQL.Async.execute("CREATE TABLE IF NOT EXISTS calendar (identifier VARCHAR(60), days TEXT)", {}, function() 
         MySQL.Async.fetchAll("SELECT * FROM calendar", {}, function(calendar_data)
             for _, v in pairs(calendar_data) do 
-                Calendar.rewardsClaimed[v.identifier] = json.decode(v.days)
+                for k, _ in pairs(json.decode(v.days)) do 
+                    if not Calendar.rewardsClaimed[v.identifier] then 
+                        Calendar.rewardsClaimed[v.identifier] = {}
+                    end
+
+                    Calendar.rewardsClaimed[v.identifier][k] = true
+                end
             end
         end)
     end)
