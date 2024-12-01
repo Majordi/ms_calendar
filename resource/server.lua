@@ -12,6 +12,16 @@ RegisterNetEvent("calendar:open", function()
     local xPlayer = ESX.GetPlayerFromId(source)
     local identifier = xPlayer.identifier
 
+    if string.len(currentNumberServerDay) >= 2 then
+        if tonumber(string.sub(currentNumberServerDay, 1, 1)) == 0 then
+            local day = string.sub(currentNumberServerDay, 2, 2)
+            currentNumberServerDay = day
+            print(currentNumberServerDay, day)
+        end
+    end
+
+    currentNumberServerDay = tonumber(currentNumberServerDay)
+
     if Calendar.rewardsClaimed[identifier] and Calendar.rewardsClaimed[identifier][currentNumberServerDay] then
         TriggerClientEvent("calendar:open", source, 0)
     else
@@ -23,6 +33,16 @@ RegisterNetEvent("calendar:claim", function()
     local currentNumberServerDay = getCurrentServerDay()
     local xPlayer = ESX.GetPlayerFromId(source)
     local identifier = xPlayer.identifier
+
+    if string.len(currentNumberServerDay) >= 2 then
+        if tonumber(string.sub(currentNumberServerDay, 1, 1)) == 0 then
+            local day = string.sub(currentNumberServerDay, 2, 2)
+            currentNumberServerDay = day
+            print(currentNumberServerDay, day)
+        end
+    end
+
+    currentNumberServerDay = tonumber(currentNumberServerDay)
 
     if not Calendar.rewardsClaimed[identifier] then
         Calendar.rewardsClaimed[identifier] = {}

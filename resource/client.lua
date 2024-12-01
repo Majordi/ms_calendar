@@ -43,7 +43,7 @@ end)
 
 RegisterNetEvent("calendar:open", function(rewardToOpen) 
     SetNuiFocus(true, true)
-
+    
     if rewardToOpen then
         Calendar.Gifts[rewardToOpen].canOpen = true
     end
